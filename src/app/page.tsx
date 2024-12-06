@@ -66,8 +66,7 @@ const Button = styled.button`
 `;
 
 const Icon = styled.img`
-  width: 30px;
-  height: 30px;
+  height: 80px;
   margin-bottom: 0.5rem;
 `;
 
@@ -79,19 +78,19 @@ export default function Home() {
         <Subtitle>VERIFY YOURSELF</Subtitle>
         <ButtonContainer>
           <Button>
-            <Icon src="/anon-icon.png" alt="Anon Aadhaar" />
+            <Icon src="/anon-aadhaar-img.png" alt="Anon Aadhaar" />
             VERIFY USING <br /> ANON AADHAAR
           </Button>
           <Button>
-            <Icon src="/semaphore-icon.png" alt="Semaphore" />
+            <Icon src="/semaphore-img.png" alt="Semaphore" />
             CREATE SEMAPHORE <br /> IDENTITY
           </Button>
           <Button>
-            <Icon src="/octo-icon.png" alt="Octo" />
+            <Icon src="/octo-img.png" alt="Octo" />
             LOGIN USING <br /> OCTO
           </Button>
           <Button>
-            <Icon src="/anon-icon.png" alt="Anon Aadhaar" />
+            <Icon src="/anon-aadhaar-img.png" alt="Anon Aadhaar" />
             VERIFY USING <br /> ANON AADHAAR
           </Button>
         </ButtonContainer>
