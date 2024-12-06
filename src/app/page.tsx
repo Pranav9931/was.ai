@@ -74,7 +74,7 @@ export default function Home() {
   return (
     <>
       <AppLayout>
-        <Title>HELLO HUMANS</Title>
+        <Title>GM GENTS</Title>
         <Subtitle>VERIFY YOURSELF</Subtitle>
         <ButtonContainer>
           <Button>
