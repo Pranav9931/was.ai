@@ -15,7 +15,9 @@
     "@mui/material": "^6.1.10",
     "@mui/styled-engine-sc": "^6.1.10",
     "@semaphore-protocol/identity": "^4.7.1",
+    "dotenv": "^16.4.7",
     "next": "15.0.4",
+    "okto-sdk-react": "^0.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "styled-components": "^6.1.13"

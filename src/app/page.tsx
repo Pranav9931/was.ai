@@ -3,6 +3,7 @@ import { AnonAadhaarProvider, LogInWithAnonAadhaar, useAnonAadhaar, useProver } 
 import { useEffect } from "react";
 import { Identity } from "@semaphore-protocol/identity"
 import styled from "styled-components";
+import { BuildType, OktoProvider } from "okto-sdk-react";
 
 const AppLayout = styled.div`
   max-width: 1200px;
@@ -91,8 +92,11 @@ export default function Home() {
 
   }
 
+  const apiKey: string = process.env.NEXT_PUBLIC_APP_ID || ""
+
   return (
     <>
+    <OktoProvider apiKey={apiKey} buildType={BuildType.SANDBOX}>
     <AnonAadhaarProvider _useTestAadhaar={true}>
       <AppLayout>
         <Title>GM GENTS</Title>
@@ -119,6 +123,7 @@ export default function Home() {
         </ButtonContainer>
       </AppLayout>
       </AnonAadhaarProvider>
+      </OktoProvider>
     </>
   );
 }
