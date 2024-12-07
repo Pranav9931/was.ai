@@ -16,6 +16,7 @@
     "@mui/styled-engine-sc": "^6.1.10",
     "@semaphore-protocol/identity": "^4.7.1",
     "dotenv": "^16.4.7",
+    "google-auth-library": "^9.15.0",
     "next": "15.0.4",
     "okto-sdk-react": "^0.1.6",
     "react": "^19.0.0",

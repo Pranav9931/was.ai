@@ -3,7 +3,8 @@ import { AnonAadhaarProvider, LogInWithAnonAadhaar, useAnonAadhaar, useProver } 
 import { useEffect } from "react";
 import { Identity } from "@semaphore-protocol/identity"
 import styled from "styled-components";
-import { BuildType, OktoProvider } from "okto-sdk-react";
+import { BuildType, OktoContextType, OktoProvider, useOkto } from "okto-sdk-react";
+import PageComp from "./components/pagecomp";
 
 const AppLayout = styled.div`
   max-width: 1200px;
@@ -76,54 +77,15 @@ const Icon = styled.img`
 
 export default function Home() {
 
-  const [anonAadhaar] = useAnonAadhaar();
-  const [, latestProof] = useProver();
+  
 
-  useEffect(() => {
-    if (anonAadhaar.status === "logged-in") {
-      console.log(anonAadhaar.status);
-    }
-  }, [anonAadhaar]);
-
-  const semaPhoreHandler = async (e: any) => {
-    e.preventDefault()
-    const {privateKey, publicKey, commitment} = new Identity();
-    window.alert(`GENERATED IDENTITY: ${privateKey}`)
-
-  }
-
-  const apiKey: string = process.env.NEXT_PUBLIC_APP_ID || ""
+  const apiKey: string = process.env.NEXT_PUBLIC_SECRET_KEY  || ""
+  
 
   return (
-    <>
     <OktoProvider apiKey={apiKey} buildType={BuildType.SANDBOX}>
-    <AnonAadhaarProvider _useTestAadhaar={true}>
-      <AppLayout>
-        <Title>GM GENTS</Title>
-        <Subtitle>VERIFY YOURSELF</Subtitle>
-        <ButtonContainer>
-          <Button>
-            <Icon src="/anon-aadhaar-img.png" alt="Anon Aadhaar" />
-            VERIFY USING <br /> ANON AADHAAR <br />  <LogInWithAnonAadhaar nullifierSeed={1234} />
-          </Button>
-          <Button>
-            <Icon src="/semaphore-img.png" alt="Semaphore" />
-            CREATE SEMAPHORE <br /> IDENTITY  <br />
-            <button
-              onClick={(e) => semaPhoreHandler(e)}
-            >CREAT IDENTITY</button>
-          </Button>
-          <Button>
-            <Icon style={{height: '50px'}} src="/unverified.png" alt="Anon Aadhaar" />
-            <br />
-            REMAIN UNVERIFIED
-            <br />
-            <span style={{color: '#FF000090'}}>NO VOTING RIGHTS</span>
-          </Button>
-        </ButtonContainer>
-      </AppLayout>
-      </AnonAadhaarProvider>
-      </OktoProvider>
-    </>
+    <PageComp />
+    </OktoProvider>
+    
   );
 }
