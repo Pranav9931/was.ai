@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AnonAadhaarProvider } from "@anon-aadhaar/react";
 import { BuildType, OktoContextType, OktoProvider, useOkto } from "okto-sdk-react";
+import { Box } from "@mui/material";
+
+import { useRouter } from "next/navigation"; // Use navigation for app router
 
 const AppLayout = styled.div`
   max-width: 1200px;
@@ -59,11 +62,42 @@ const PageComp = () => {
 
   const [walletIsCreating, setWalletIsCreating] = useState(false)
   const [walletCreated, setWalletCreated] = useState(false)
+  const [wallets, setWallets] = useState<string>("")
+
+  const router = useRouter()
 
   useEffect(() => {
     console.log(`LOGIN STATUS: ${isLoggedIn}`)
   }, [authenticate])
 
+  const getWalletsHandler = async () => {
+    try {
+      const wallets = await getWallets();
+      return wallets.wallets[1].address; // Ensure wallets.wallets[1] exists
+    } catch (error) {
+      console.error("Error fetching wallets:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const fetchWallets = async () => {
+        const wallets = await getWalletsHandler();
+        setWallets(wallets as string); // Set resolved value
+
+        if (wallets != ""){
+            router.push("./verify")
+        }
+      };
+
+      fetchWallets();
+    }
+  }, [walletCreated]);
+
+  useEffect(() => {
+    console.log(wallets)
+  }, [wallets])
 
   useEffect(() => {
     // Load Google API
@@ -113,23 +147,42 @@ const PageComp = () => {
         <ButtonContainer>
           
             {!isLoggedIn && <Button onClick={handleGoogleSignIn}>Login with Google</Button>}
-            {isLoggedIn && walletIsCreating && <Button onClick={handleGoogleSignIn}>CREATING WALLET</Button>}
-            {isLoggedIn && !walletIsCreating && walletCreated && <Button onClick={handleGoogleSignIn}>DONE SCENE</Button>}
-            {/* {isLoggedIn && !walletIsCreating && !walletCreated && <Button onClick={logout}>SOMETHING WENT WRONG</Button>} */}
+            {
+                isLoggedIn && !walletCreated && <>
+                <button onClick={(e) => {
+                    e.preventDefault();
+                    try {
+                        setWalletIsCreating(true);
+                        createWallet()
+                        setWalletIsCreating(false)
+                        setWalletCreated(true)
+                    } catch (err) {
+                        setWalletIsCreating(false)
+                        setWalletCreated(false)
+                    }
+                }}  >
+                    Create Wallet
+                </button>
 
+                <button onClick={(e) => {
+                    e.preventDefault();
+                    logOut()
+                }} >
+                    Logout
+                </button>
+                </>
+            }
+            {isLoggedIn && walletCreated && <>
+                <Box>
 
-<button onClick={(e) => {
-                e.preventDefault();
-                createWallet()
-            }}  >
-    Create Wallet
-</button>
-            <button onClick={(e) => {
-                e.preventDefault();
-                logOut()
-            }} >
-                Logout
-            </button>
+                </Box>
+                <button onClick={(e) => {
+                    e.preventDefault();
+                    logOut()
+                }} >
+                    Logout
+                </button>
+            </>}
         </ButtonContainer>
       </AppLayout>
     </AnonAadhaarProvider>
