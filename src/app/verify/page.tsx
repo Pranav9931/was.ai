@@ -1,8 +1,9 @@
 "use client";
 import { AnonAadhaarProvider, LogInWithAnonAadhaar, useAnonAadhaar, useProver } from "@anon-aadhaar/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Identity } from "@semaphore-protocol/identity"
 import styled from "styled-components";
+import { useRouter } from "next/navigation";
 
 const AppLayout = styled.div`
   max-width: 1200px;
@@ -78,9 +79,14 @@ export default function Verify() {
   const [anonAadhaar] = useAnonAadhaar();
   const [, latestProof] = useProver();
 
+  const [verified, setVerified] = useState(false);
+
+  const router = useRouter()
+
   useEffect(() => {
     if (anonAadhaar.status === "logged-in") {
       console.log(anonAadhaar.status);
+      setVerified(true)
     }
   }, [anonAadhaar]);
 
@@ -89,6 +95,11 @@ export default function Verify() {
     const {privateKey, publicKey, commitment} = new Identity();
     window.alert(`GENERATED IDENTITY: ${privateKey}`)
 
+  }
+
+  const handleContinue = (e: any) => {
+    e.preventDefault()
+    router.push("./dashboard")
   }
 
   return (
@@ -117,6 +128,7 @@ export default function Verify() {
             <span style={{color: '#FF000090'}}>NO VOTING RIGHTS</span>
           </Button>
         </ButtonContainer>
+        <Button onClick={(e) => handleContinue(e)}>Continue</Button>
       </AppLayout>
       </AnonAadhaarProvider>
     </>

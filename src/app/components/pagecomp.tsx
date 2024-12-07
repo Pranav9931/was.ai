@@ -73,7 +73,10 @@ const PageComp = () => {
   const getWalletsHandler = async () => {
     try {
       const wallets = await getWallets();
-      return wallets.wallets[1].address; // Ensure wallets.wallets[1] exists
+      const res = wallets.wallets[1].address;
+      localStorage.setItem("wallet", res)
+
+      return res; // Ensure wallets.wallets[1] exists
     } catch (error) {
       console.error("Error fetching wallets:", error);
       return null;
