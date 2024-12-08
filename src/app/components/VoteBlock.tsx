@@ -171,7 +171,7 @@ const VoteBlock = () => {
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 
-      const tx = await contract.castVote(vote, 2); // Pass vote and power as arguments
+      const tx = await contract.castVote(true, 2); // Pass vote and power as arguments
       const receipt = await tx.wait();
 
       alert(
