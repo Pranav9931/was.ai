@@ -5,6 +5,8 @@ import { BuildType, OktoContextType, OktoProvider, useOkto } from "okto-sdk-reac
 import { Box } from "@mui/material";
 
 import { useRouter } from "next/navigation"; // Use navigation for app router
+import { useWallet } from "../Context";
+
 
 const AppLayout = styled.div`
   max-width: 1200px;
@@ -58,11 +60,13 @@ const Button = styled.button`
 `;
 
 const PageComp = () => {
-  const { authenticate, createWallet, isLoggedIn, getWallets , logOut} = useOkto() as OktoContextType;
+  // const { authenticate, createWallet, isLoggedIn, getWallets , logOut} = useOkto() as OktoContextType;
 
   const [walletIsCreating, setWalletIsCreating] = useState(false)
   const [walletCreated, setWalletCreated] = useState(false)
   const [wallets, setWallets] = useState<string>("")
+
+  const {isLoggedIn, authenticate, getWalletDetails, createWallet, logOut } = useWallet();
 
   const router = useRouter()
 
@@ -72,7 +76,7 @@ const PageComp = () => {
 
   const getWalletsHandler = async () => {
     try {
-      const wallets = await getWallets();
+      const wallets = await getWalletDetails();
       const res = wallets.wallets[1].address;
       localStorage.setItem("wallet", res)
 
@@ -123,18 +127,7 @@ const PageComp = () => {
         const idToken = response.credential;
         console.log("Google ID Token:", idToken);
 
-        authenticate(idToken, async (result, error) => {
-          if (result) {
-            console.log("Authentication successful");
-            const authToken = result.auth_token;
-            // setAuthToken(authToken)
-
-            console.log("auth", authToken);
-          }
-          if (error) {
-            console.error("Authentication error:", error);
-          }
-        });
+        authenticate(idToken);
       },
     });
 

@@ -1,9 +1,21 @@
 "use client"
-import { Box, Button, Card, CardContent, CardMedia, CircularProgress, TextField, Typography } from "@mui/material"
+import { Box } from "@mui/material"
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import ChatbotComponent from "../components/Chatbot"
+import VoteBlock from "../components/VoteBlock"
+
+
+const Score = styled.div`
+    background: #1a1a1a;
+    padding: 10px 20px;
+    border-radius: 30px;
+    margin-top: -60px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    width: 420px;
+`
 
 const DashboardContainer = styled.div`
     color: #FFFFFF;
@@ -64,9 +76,9 @@ const LeftContainer = styled.div`
 `
 
 
-export default function Dashboard() {
+export default function Dashboard({oktoHook}: {oktoHook: any}) {
 
-    const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
@@ -79,18 +91,34 @@ export default function Dashboard() {
   const [chatBot, setChatbot] = useState(false)
   const [type, setType] = useState("");
 
+  const [userReputation, setUserReputation] = useState(0);
+
+  useEffect(() => {
+    const fetchReputation = async () => {
+      try {
+        const wallet = localStorage.getItem("wallet")
+  
+        const apiResponse = await axios.get(
+            `http://localhost:5009/users/${wallet}/reputation`
+        );
+    
+        console.log("API Response:", apiResponse.data);
+
+        setUserReputation(apiResponse.data.score)
+      } catch (err) {
+          console.error("Error during API call:", err);
+      }
+    }
+
+    fetchReputation();
+    
+  }, [])
+
   useEffect(() => {
     if(type != "") {
         setChatbot(true)
     }
   }, [type])
-
-  const searchInputRef = useRef<HTMLInputElement>(null);
-
-    const charID: string = process.env.NEXT_PUBLIC_CHARACTER_ID || "";
-    const api: string = process.env.NEXT_PUBLIC_API_KEY || "";
-
-//   const { client } = useConvaiClient(charID, api);
 
 
   useEffect(() => {
@@ -187,6 +215,9 @@ export default function Dashboard() {
 
         <MainContainer>
             <CoverImg src="/wasdai-cover.png" />
+            {
+              userReputation && <Score>USER VOTE STRENGTH: {userReputation} [i.e. 1 VOTE = {userReputation}]</Score>
+            }
             
         </MainContainer>
 
@@ -232,11 +263,7 @@ export default function Dashboard() {
 
             <br />
             
-            {/* <ChatBubble
-                chatHistory="Show"
-                chatUiVariant="Sequential Line Chat"
-                client={client}
-            /> */}
+            <VoteBlock />
 
         </RightContainer>
         </Box>
