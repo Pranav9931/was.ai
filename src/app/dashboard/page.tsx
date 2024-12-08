@@ -5,30 +5,42 @@ import { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import ChatbotComponent from "../components/Chatbot"
 import VoteBlock from "../components/VoteBlock"
+import { useRouter } from "next/navigation"
 
 
-const Score = styled.div`
-    background: #1a1a1a;
-    padding: 10px 20px;
-    border-radius: 30px;
-    margin-top: -60px;
-    margin-left: 20px;
-    margin-bottom: 20px;
-    width: 420px;
+export const Wrapper = styled.div`
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+`
+export const WrapperItem = styled.div`
+  background: #1a1a1a;
+  padding: 10px 20px;
+  border-radius: 20px;
+`
+
+const GM = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+  font-family: Inter, sans-serif;
+  font-size: 24px;
 `
 
 const DashboardContainer = styled.div`
     color: #FFFFFF;
-    max-width: 1200px;
-    min-width: 1000px;
+    max-width: 700px;
+    // min-width: 1000px;
     font-family: Roboto Mono, Inter, sans-serif;
     gap: 10px;
-    margin: 0 auto;
+    margin: 50px auto 0 auto;
     padding: 10px 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    justify-content: center;
 `
 
 const ChatSelectionContainer = styled.div`
@@ -93,6 +105,7 @@ export default function Dashboard({oktoHook}: {oktoHook: any}) {
 
   const [userReputation, setUserReputation] = useState(0);
 
+  const wallet = localStorage.getItem("wallet")
   useEffect(() => {
     const fetchReputation = async () => {
       try {
@@ -210,10 +223,44 @@ export default function Dashboard({oktoHook}: {oktoHook: any}) {
     window.open(downloadUrl, '_blank');
   };
 
+  const router = useRouter();
   return (
     <DashboardContainer>
+      <Wrapper>
+        <WrapperItem 
+          onClick={() => router.push("./search")}
+        >
+          SEARCH MODELS
+        </WrapperItem>
 
-        <MainContainer>
+        <WrapperItem 
+          onClick={() => router.push("./dashboard")}
+        >
+          AI AGENT CHAT
+        </WrapperItem>
+
+        <WrapperItem 
+          onClick={() => router.push("./voting")}
+        >
+          LIVE VOTING
+        </WrapperItem>
+
+        <WrapperItem 
+          onClick={() => router.push("./leaderboard")}
+        >
+          LEADERBOARD
+        </WrapperItem>
+
+        <WrapperItem 
+          onClick={() => router.push("./akave")}
+        >
+          UPLOAD ASSETS
+        </WrapperItem>
+      </Wrapper>
+
+      <br /><br />
+
+        {/* <MainContainer>
             <CoverImg src="/wasdai-cover.png" />
             {
               userReputation && <Score>USER VOTE STRENGTH: {userReputation} [i.e. 1 VOTE = {userReputation}]</Score>
@@ -266,7 +313,54 @@ export default function Dashboard({oktoHook}: {oktoHook: any}) {
             <VoteBlock />
 
         </RightContainer>
-        </Box>
+        </Box> */}
+
+        <GM>
+          Good morning, Human!
+          <Box
+            sx={{
+              padding: '10px 20px',
+              background: '#1e1e1e',
+              fontFamily: 'Roboto Mono, sans-serif',
+              fontSize: '12px',
+              borderRadius: '20px',
+              maxWidth: 400,
+              margin: '0 auto'
+            }}
+          >
+            {wallet}
+          </Box>
+        </GM>
+        <ChatSelectionContainer>
+                SELECT CHAT TYPE
+                <br />
+                <br />
+                <p style={{fontSize: '12px'}}>YOU CAN SELECT YOUR CHAT MEDIUM</p>
+                <select
+                    style={{
+                        width: '100%',
+                        height: '50px',
+                        borderRadius: '10px',
+                        background: '#1a1a1a',
+                        marginTop: '20px',
+                        padding: '10px',
+                        color: '#ffffff', // Adjust text color for better visibility
+                    }}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setType(e.target.value)}
+                >
+                <option id="none" value="">SELECT YOUR MEDIUM</option>
+                <option id="convai" value="convai">AI AGENT</option>
+                <option id="cdp" value="cdp">AI AGENT</option>
+                </select>
+
+            </ChatSelectionContainer>
+        <ChatArena>
+          {
+              type != "" ? <ChatbotComponent /> : <></>
+          }
+        </ChatArena>
+
+        
     </DashboardContainer>
   )
 }

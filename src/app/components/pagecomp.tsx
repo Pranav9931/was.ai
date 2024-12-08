@@ -138,7 +138,7 @@ const PageComp = () => {
   return (
     <AnonAadhaarProvider _useTestAadhaar={true}>
       <AppLayout>
-        <Title>GM GENTS</Title>
+        <Title>WASD.ai</Title>
         <Subtitle>CONNECT YOUR WALLET</Subtitle>
         <ButtonContainer>
           

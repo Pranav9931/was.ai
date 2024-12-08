@@ -106,7 +106,7 @@ export default function Verify() {
     <>
     <AnonAadhaarProvider _useTestAadhaar={true}>
       <AppLayout>
-        <Title>GM GENTS</Title>
+        <Title>WASD.ai</Title>
         <Subtitle>VERIFY YOURSELF</Subtitle>
         <ButtonContainer>
           <Button>

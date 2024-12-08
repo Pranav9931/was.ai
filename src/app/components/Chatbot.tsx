@@ -2,7 +2,23 @@ import React, { useState } from 'react';
 import { TextField, Button, Container, Box, Typography, IconButton } from '@mui/material';
 import axios from 'axios';
 import { OktoContextType, useOkto } from 'okto-sdk-react';
+import styled from 'styled-components';
 
+const CommandWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+`
+
+const Commands = styled.div`
+  border-radius: 20px;
+  flex: 1;
+  min-width: 100px;
+  background: #1A1A1A;
+  padding: 20px 10px;
+  box-sizing: border-box;
+`
 
 const ChatbotComponent = ({ state }: any) => {
     const [input, setInput] = useState('');
@@ -81,8 +97,7 @@ const ChatbotComponent = ({ state }: any) => {
           setInput("");
 
         try {
-            const wallet = await getWalletsHandler();
-        
+            const wallet = localStorage.getItem("wallet")
             const payload = {
                 userUserWallet: wallet,
                 auraPoints: 100,
@@ -101,8 +116,9 @@ const ChatbotComponent = ({ state }: any) => {
       };
 
     return (
+      <>
         <Container sx={{background: '#1a1a1a', maxWidth: '500px'}}>
-            <Box sx={{padding: '20px', borderRadius: '10px', position: 'relative', color: '#ffffff' }}>
+            <Box sx={{padding: '5px', borderRadius: '10px', position: 'relative', color: '#ffffff' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0' }}>
                     <Typography variant="h6" color="primary" sx={{ fontWeight: 700 }}>
                         LET AI DO THE MAGIC
@@ -115,6 +131,7 @@ const ChatbotComponent = ({ state }: any) => {
                 <TextField
                     label="Ask a question"
                     variant="outlined"
+                    autoComplete='off'
                     fullWidth
                     value={input}
                     onChange={handleInputChange}
@@ -167,7 +184,34 @@ const ChatbotComponent = ({ state }: any) => {
                   />
                 )}
             </Box>
-        </Container>
+        </Container> 
+        <br />
+        <p>TRY SOME ACTIONS WITH YOUR AI AGENT</p>
+        
+        <CommandWrapper>
+          <Commands
+            onClick={() => {
+              setInput("LAUNCH A TOKEN NAMED BASEME, WITH THE SYBMOL BSM, TOTAL SUPPLY: 1000000");
+            }}
+          >
+            <p>DEPLOY A TOKEN</p><br />
+            <p style={{fontSize: '10px'}}>
+              LAUNCH A TOKEN NAMED BASEME, WITH THE SYBMOL BSM, TOTAL SUPPLY: 1000000
+            </p>
+          </Commands>
+
+          <Commands
+            onClick={() => {
+              setInput("DEPLOY A SMART CONTRACT WITH NAME VOTING, FUNCTIONS TO CAST VOTE, TOTAL VOTE RETRIEVAL");
+            }}
+          >
+            <p>DEPLOY SMART CONTRACT</p><br />
+            <p style={{fontSize: '10px'}}>
+            DEPLOY A SMART CONTRACT WITH NAME VOTING, FUNCTIONS TO CAST VOTE, TOTAL VOTE RETRIEVAL
+            </p>
+          </Commands>
+        </CommandWrapper>
+      </>
     );
 };
 

@@ -3,11 +3,14 @@ import { Box, Button, Card, CardContent, CardMedia, CircularProgress, TextField,
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
+import { Wrapper, WrapperItem } from "../dashboard/page"
+import { useRouter } from "next/navigation"
 
 const DashboardContainer = styled.div`
     color: #FFFFFF;
     font-family: Roboto Mono, Inter, sans-serif;
     display: flex;
+    flex-direction: column;
     gap: 10px;
     padding: 10px 20px;
     box-sizing: border-box;
@@ -166,11 +169,41 @@ export default function Search() {
     window.open(downloadUrl, '_blank');
   };
 
+  const router = useRouter()
+
   return (
     <DashboardContainer>
 
+<Wrapper>
+        <WrapperItem 
+          onClick={() => router.push("./search")}
+        >
+          SEARCH MODELS
+        </WrapperItem>
+
+        <WrapperItem 
+          onClick={() => router.push("./dashboard")}
+        >
+          AI AGENT CHAT
+        </WrapperItem>
+
+        <WrapperItem 
+          onClick={() => router.push("./voting")}
+        >
+          LIVE VOTING
+        </WrapperItem>
+
+        <WrapperItem 
+          onClick={() => router.push("./leaderboard")}
+        >
+          LEADERBOARD
+        </WrapperItem>
+      </Wrapper>
+
+      <br /><br />
+
         <MainContainer>
-            <CoverImg src="/wasdai-cover.png" />
+            {/* <CoverImg src="/wasdai-cover.png" /> */}
             <TheGridLayout>
                 {/* Search Bar */}
                 <Box
@@ -203,6 +236,7 @@ export default function Search() {
                             borderColor: '#00FF00',
                             boxShadow: '0 0 20px #00FF00',
                         },
+                        margin: '0 auto',
                         mr: { sm: 2 },
                         mb: { xs: 2, sm: 0 },
                     }}
